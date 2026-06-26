@@ -1,0 +1,2 @@
+included_people,observed_deaths,expected_deaths,smr,ci_low,ci_high,person_years,censor_date
+2215095,37038,24765.442994,1.495552,1.480398,1.510861,3020910.885694,2023-10-31

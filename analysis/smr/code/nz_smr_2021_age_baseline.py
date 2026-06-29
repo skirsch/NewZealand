@@ -31,6 +31,7 @@ class Person:
     dob: date
     last_vax: date
     death: date | None
+    last_dose_number: int | None = None
 
 
 def parse_date(value: str) -> date | None:
@@ -96,15 +97,31 @@ def load_people(path: Path) -> dict[str, Person]:
             service = parse_date(row["date_time_of_service"])
             death = parse_date(row["date_of_death"])
             dob = parse_date(row["date_of_birth"])
+            dose_number = int(row["dose_number"]) if row["dose_number"] else None
             if service is None or dob is None:
                 continue
             existing = people.get(mrn)
             if existing is None:
-                people[mrn] = Person(dob=dob, last_vax=service, death=death)
+                people[mrn] = Person(
+                    dob=dob,
+                    last_vax=service,
+                    death=death,
+                    last_dose_number=dose_number,
+                )
                 continue
             if service > existing.last_vax:
                 existing.last_vax = service
                 existing.dob = dob
+                existing.last_dose_number = dose_number
+            elif (
+                service == existing.last_vax
+                and dose_number is not None
+                and (
+                    existing.last_dose_number is None
+                    or dose_number > existing.last_dose_number
+                )
+            ):
+                existing.last_dose_number = dose_number
             if death and (existing.death is None or death < existing.death):
                 existing.death = death
     return people

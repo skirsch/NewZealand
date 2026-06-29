@@ -18,6 +18,7 @@ Run from the repository root:
 
 ```powershell
 python analysis\smr\code\nz_smr_2021_age_baseline.py
+python analysis\smr\code\nz_smr_by_last_dose_number.py
 python analysis\smr\code\nz_time_since_last_dose_oe.py
 python analysis\smr\code\nz_time_since_last_dose_calendar_adjusted.py
 ```
@@ -33,6 +34,10 @@ The main SMR script:
 - splits person-time across 5-year age bands as people age;
 - computes expected deaths from Stats NZ 2021 total-population age-specific death rates;
 - reports observed deaths, expected deaths, SMR, and a large-count Poisson log confidence interval.
+
+The last-dose-number script uses the same cohort entry, censoring, age-band
+splitting, and 2021 baseline, but groups people by the dose number attached to
+their final recorded vaccination.
 
 The time-since-last-dose script splits the same follow-up into windows:
 
